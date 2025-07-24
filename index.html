@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Desqueeze</title>
+  <style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-width: 100vw;
+  min-height: 100vh;
+  font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+  font-feature-settings: 'lnum' 1;
+  font-variant-numeric: lining-nums;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+
+  background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
+  color: white;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.container {
+  max-width: 900px;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 15px;
+  padding: 30px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  margin-top: 20px;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.upload-container {
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px dashed #4a90e2;
+  border-radius: 10px;
+  padding: 30px;
+  text-align: center;
+  margin-bottom: 30px;
+  transition: all 0.3s ease;
+}
+
+.upload-container:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: #5cb85c;
+}
+
+.upload-container.deactivate {
+  display: none;
+}
+
+.upload-icon {
+  font-size: 3rem;
+  margin-bottom: 15px;
+  color: #4a90e2;
+}
+
+.file-input {
+  display: none;
+}
+
+.upload-btn {
+  margin-top: 2rem;
+  background: #4a90e2;
+  color: white;
+  padding: 12px 25px;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.upload-btn:hover {
+  background: #357abd;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+}
+
+.controls {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 25px;
+  margin-bottom: 30px;
+  display: none;
+}
+
+.controls.active {
+  display: block;
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.slider-container {
+  margin: 20px 0;
+}
+
+label {
+  display: block;
+  margin-bottom: 15px;
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+.slider {
+  width: 100%;
+  height: 25px;
+  -webkit-appearance: none;
+  background: linear-gradient(to right, #4a90e2, #5cb85c);
+  border-radius: 10px;
+  outline: none;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background: white;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  border: 2px solid #4a90e2;
+}
+
+.value-display {
+  text-align: center;
+  font-size: 1.3rem;
+  margin-top: 10px;
+  font-weight: bold;
+  color: #5cb85c;
+}
+
+.canvas-container {
+  text-align: center;
+  margin-top: 20px;
+  display: none;
+}
+
+.canvas-container.active {
+  display: block;
+}
+
+canvas {
+  max-width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+  background: #333;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+canvas:hover {
+  transform: scale(1.02);
+}
+
+.download-hint {
+  margin-top: 15px;
+  font-size: 0.9rem;
+  opacity: 0.8;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.6;
+  }
+}
+
+.instructions {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+.instructions h2 {
+  margin-bottom: 15px;
+  color: #5cb85c;
+}
+
+.instructions ol {
+  padding-left: 20px;
+}
+
+.instructions li {
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+
+footer {
+  margin-top: 30px;
+  text-align: center;
+  opacity: 0.8;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 600px) {
+  .container {
+    padding: 15px;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  .upload-container {
+    padding: 20px;
+  }
+}
+
+  </style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>Image Width Stretch Tool (Anamorphic Desqueezer)</h1>
+    <p class="subtitle">
+      Open an image and adjust the width slider to stretch it horizontally.
+      Click on the output image to download the edited JPEG version.
+    </p>
+  </header>
+
+  <div id="uploadContainer" class="upload-container">
+    <div class="upload-icon">📁</div>
+    <p>Open an image to get started</p>
+    <input type="file" id="fileInput" class="file-input" accept="image/*" />
+    <button class="upload-btn" id="uploadBtn">Choose Image</button>
+  </div>
+
+  <div class="controls" id="controls">
+    <label for="stretchSlider"
+      >Stretch Factor: <span id="factorValue">1.00</span>x</label
+    >
+    <div class="slider-container">
+      <input
+        type="range"
+        min="1"
+        max="2"
+        step="0.01"
+        value="1"
+        class="slider"
+        id="stretchSlider"
+        list="tickmarks" />
+
+      <datalist id="tickmarks">
+        <option value="1"></option>
+        <option value="1.33"></option>
+        <option value="1.42"></option>
+        <option value="1.5"></option>
+        <option value="1.8"></option>
+        <option value="2"></option>
+      </datalist>
+    </div>
+    <div class="value-display">
+      Width: <span id="widthValue">100%</span> of original
+    </div>
+  </div>
+
+  <div class="canvas-container" id="canvasContainer" title="Click to download your image">
+    <canvas id="imageCanvas"></canvas>
+    <div class="download-hint">Click on the image to download</div>
+  </div>
+
+  <div class="instructions">
+    <h2>How to Use</h2>
+    <ol>
+      <li>Click "Choose Image" to upload any image from your device</li>
+      <li>
+        Use the slider to adjust the horizontal stretch factor (1.00x to 2.00x)
+      </li>
+      <li>Watch the image stretch in real-time as you move the slider</li>
+      <li>Click on the output image to download the edited (JPEG) version</li>
+      <li>
+        All processing happens on your device - your image never leaves your
+        computer
+      </li>
+    </ol>
+  </div>
+</div>
+
+<footer>
+  <p>Client-Side Image Processing | No Server Required | Entire page is one HTML file</p>
+</footer>
+<script>
+const searchParams = new URLSearchParams(window.location.search);
+const uploadContainer = document.getElementById("uploadContainer");
+const fileInput = document.getElementById("fileInput");
+const uploadBtn = document.getElementById("uploadBtn");
+const stretchSlider = document.getElementById("stretchSlider");
+const factorValue = document.getElementById("factorValue");
+const widthValue = document.getElementById("widthValue");
+const controls = document.getElementById("controls");
+const canvasContainer = document.getElementById("canvasContainer");
+const canvas = document.getElementById("imageCanvas");
+const ctx = canvas.getContext("2d");
+
+let originalImage = null;
+let currentStretchFactor = 1;
+
+// Trigger file input when upload button is clicked
+uploadBtn.addEventListener("click", () => {
+  fileInput.click();
+});
+
+// Handle file selection
+fileInput.addEventListener("change", function (e) {
+  if (this.files && this.files[0]) {
+    const reader = new FileReader();
+
+    reader.onload = function (event) {
+      originalImage = new Image();
+      originalImage.onload = function () {
+        // Show controls and canvas
+        controls.classList.add("active");
+        canvasContainer.classList.add("active");
+        // hide the "uploader"
+        uploadContainer.classList.add("deactivate");
+
+        const adjustedValue = searchParams.has('squeeze') && parseFloat(searchParams.get('squeeze')) >= 1 && parseFloat(searchParams.get('squeeze')) <= 2 ? parseFloat(searchParams.get('squeeze')) : 1;
+
+        // Reset slider to default
+        stretchSlider.value = adjustedValue;
+        factorValue.textContent = adjustedValue.toString();
+        widthValue.textContent = `${adjustedValue * 100}%`;
+        currentStretchFactor = adjustedValue;
+
+        // Draw the original image
+        drawStretchedImage(adjustedValue);
+      };
+      originalImage.src = event.target.result;
+    };
+
+    reader.readAsDataURL(this.files[0]);
+  }
+});
+
+if (searchParams.has('squeeze') && (parseFloat(searchParams.get('squeeze')) >= 1 || parseFloat(searchParams.get('squeeze')) <= 2)) {
+  stretchSlider.value = searchParams.get('squeeze');
+}
+
+// Handle slider changes
+stretchSlider.addEventListener("input", function () {
+  const factor = parseFloat(this.value);
+  currentStretchFactor = factor;
+  factorValue.textContent = factor.toFixed(2);
+  widthValue.textContent = Math.round(factor * 100) + "%";
+
+  if (originalImage) {
+    drawStretchedImage(factor);
+  }
+});
+
+// Download image when canvas is clicked
+canvas.addEventListener("click", function () {
+  if (originalImage) {
+    downloadImage();
+  }
+});
+
+// Function to draw the stretched image on canvas
+function drawStretchedImage(factor) {
+  if (!originalImage) return;
+
+  // Calculate new dimensions
+  const newWidth = originalImage.width * factor;
+  const newHeight = originalImage.height;
+
+  // Set canvas dimensions
+  canvas.width = newWidth;
+  canvas.height = newHeight;
+
+  // Clear canvas
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Draw stretched image
+  ctx.drawImage(originalImage, 0, 0, newWidth, newHeight);
+}
+
+// Function to download the edited image
+function downloadImage() {
+  // Create a temporary link
+  const link = document.createElement("a");
+
+  // Set the download filename
+  const timestamp = new Date().getTime();
+  link.download = `${timestamp}-desqueezed.jpeg`;
+
+  // Convert canvas to data URL and set as href
+  link.href = canvas.toDataURL("image/jpeg");
+
+  // Trigger download
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+</script>
+</body>
+</html>
