@@ -268,6 +268,10 @@ footer a {
 }
 
 @media (max-width: 600px) {
+  body {
+    padding: 1rem;
+  }
+
   .container {
     padding: 15px;
   }
@@ -436,17 +440,19 @@ function drawStretchedImage(factor) {
 
   // Calculate new dimensions
   const newWidth = originalImage.width * factor;
-  const newHeight = originalImage.height;
+  const originalHeight = originalImage.height;
+
+  canvas.style.aspectRatio = `${2 / factor}/1`;
 
   // Set canvas dimensions
   canvas.width = newWidth;
-  canvas.height = newHeight;
+  canvas.height = originalHeight;
 
   // Clear canvas
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   // Draw stretched image
-  ctx.drawImage(originalImage, 0, 0, newWidth, newHeight);
+  ctx.drawImage(originalImage, 0, 0, newWidth, originalHeight);
 }
 
 // Function to download the edited image
