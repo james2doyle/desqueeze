@@ -13,6 +13,8 @@ Desqueeze - Image Width Stretch Tool
 * **Single-File Application**: The entire page is contained within a single `index.html` file, making it highly portable and easy to use.
 * **Intuitive Interface**: A straightforward design allows for quick image manipulation.
 
+You can link to a specific pre-determined squeeze factor using a query string: https://james2doyle.github.io/desqueeze/?squeeze=1.33 will automatically set the slider to 1.33 when you open your image.
+
 ## How to Use
 
 1. **Open an Image**: Click the "Choose Image" button to select an image file from your device.
