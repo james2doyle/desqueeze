@@ -26,7 +26,7 @@ You can link to a specific pre-determined squeeze factor using a query string: h
 
 Since `Desqueeze` is a single-file HTML page, you can run it directly from your local filesystem:
 
-1. **Save the file**: Save the provided HTML code as `index.html` (or any `.html` file) on your computer.
+1. **Save the file**: Save the provided HTML code as `index.html` (from the `docs` folder) on your computer.
 2. **Open in Browser**: Double-click the `index.html` file, or drag and drop it into your web browser (e.g., Chrome, Firefox, Safari). The page will load immediately.
 
 ## Technologies Used
