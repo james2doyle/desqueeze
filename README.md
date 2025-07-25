@@ -3,6 +3,10 @@ Desqueeze - Image Width Stretch Tool
 
 [LIVE SITE](https://james2doyle.github.io/desqueeze/)
 
+![demo-1.jpeg]
+
+![demo-2.jpeg]
+
 `Desqueeze` is a simple, client-side web page designed to help you stretch the width of images, particularly useful for "desqueezing" anamorphic footage or images. All image processing happens directly in your browser, ensuring your images never leave your device.
 
 ## Features
